@@ -74,7 +74,7 @@ objects:
     source:
       git:
         uri: https://github.com/cprato79/uid-ocp-template-centos7
-      contextDir: "centos7-base"
+      contextDir: "./"
     strategy: 
       type: "Docker"
       dockerStrategy:
