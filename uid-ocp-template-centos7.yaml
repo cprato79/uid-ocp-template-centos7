@@ -74,9 +74,9 @@ objects:
     source:
       git:
         uri: https://github.com/cprato79/uid-ocp-template-centos7
-      contextDir: "./"
     strategy: 
       type: "Docker"
+      noCache: true
       dockerStrategy:
         dockerfilePath: Dockerfile.centos7
     output:
