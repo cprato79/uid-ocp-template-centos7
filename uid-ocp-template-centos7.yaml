@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: centos7-base
+objects:
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: null
+    generation: 7
+    labels:
+      app: centos7-base
+    name: centos7-base
+  spec:
+    replicas: 1
+    selector:
+      app: centos7-base
+      deploymentconfig: centos7-base
+    strategy:
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftWebConsole
+        creationTimestamp: null
+        labels:
+          app: centos7-base
+          deploymentconfig: centos7-base
+      spec:
+        containers:
+        - image: centos7-base:centos7
+          imagePullPolicy: Always
+          name: centos7-base
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - centos7-base
+        from:
+          kind: ImageStreamTag
+          name: centos7-base:centos7
+      type: ImageChange
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: centos7-base
+    name: centos7-base
+  spec:
+    tags:
+    - name: "centos7-base"
+- apiVersion: "v1"
+  kind: "BuildConfig"
+  metadata:
+    name: "centos7-base"
+  spec:
+    source:
+      dockerfile: Dockerfile.centos7
+#      type: "Docker"
+      contextDir: "centos7-base"
+    strategy: 
+      type: "Docker"
+      dockerStrategy:
+        dockerfilePath: Dockerfile.centos7
+    output:
+      to:
+        kind: "ImageStreamTag"
+        name: "centos7-base:centos7"
+    triggers:
+    - generic:
+        secret: b725254e6534fd70
+      type: Generic
+    - type: ConfigChange
