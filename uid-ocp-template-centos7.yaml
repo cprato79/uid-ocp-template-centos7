@@ -72,8 +72,8 @@ objects:
     name: "centos7-base"
   spec:
     source:
-      dockerfile: Dockerfile.centos7
-#      type: "Docker"
+      git:
+        uri: https://github.com/cprato79/uid-ocp-template-centos7
       contextDir: "centos7-base"
     strategy: 
       type: "Docker"
