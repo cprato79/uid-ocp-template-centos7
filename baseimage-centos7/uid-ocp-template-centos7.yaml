@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: centos7-base
+  name: baseimage-centos7
 objects:
 - apiVersion: v1
   kind: DeploymentConfig
@@ -11,13 +11,13 @@ objects:
     creationTimestamp: null
     generation: 7
     labels:
-      app: centos7-base
-    name: centos7-base
+      app: baseimage-centos7
+    name: baseimage-centos7
   spec:
     replicas: 1
     selector:
-      app: centos7-base
-      deploymentconfig: centos7-base
+      app: baseimage-centos7
+      deploymentconfig: baseimage-centos7
     strategy:
       resources: {}
       rollingParams:
@@ -33,13 +33,13 @@ objects:
           openshift.io/generated-by: OpenShiftWebConsole
         creationTimestamp: null
         labels:
-          app: centos7-base
-          deploymentconfig: centos7-base
+          app: baseimage-centos7
+          deploymentconfig: baseimage-centos7
       spec:
         containers:
-        - image: centos7-base:centos7
+        - image: baseimage-centos7:centos7
           imagePullPolicy: Always
-          name: centos7-base
+          name: baseimage-centos7
           resources: {}
           terminationMessagePath: /dev/termination-log
         dnsPolicy: ClusterFirst
@@ -52,37 +52,37 @@ objects:
     - imageChangeParams:
         automatic: true
         containerNames:
-        - centos7-base
+        - baseimage-centos7
         from:
           kind: ImageStreamTag
-          name: centos7-base:centos7
+          name: baseimage-centos7:centos7
       type: ImageChange
 - apiVersion: v1
   kind: ImageStream
   metadata:
     labels:
-      app: centos7-base
-    name: centos7-base
+      app: baseimage-centos7
+    name: baseimage-centos7
   spec:
     tags:
-    - name: "centos7-base"
+    - name: "baseimage-centos7"
 - apiVersion: "v1"
   kind: "BuildConfig"
   metadata:
-    name: "centos7-base"
+    name: "baseimage-centos7"
   spec:
     source:
       git:
         uri: https://github.com/cprato79/uid-ocp-template-centos7
+      contextDir: "baseimage-centos7"
     strategy: 
       type: "Docker"
-      noCache: true
       dockerStrategy:
         dockerfilePath: Dockerfile.centos7
     output:
       to:
         kind: "ImageStreamTag"
-        name: "centos7-base:centos7"
+        name: "baseimage-centos7:centos7"
     triggers:
     - generic:
         secret: b725254e6534fd70

@@ -2,7 +2,7 @@ FROM centos:centos7
 MAINTAINER Red Hat Systems Engineering <refarch-feedback@redhat.com>
 
 ### Atomic/OpenShift Labels - https://github.com/projectatomic/ContainerApplicationGenericLabels
-LABEL name="acme/starter-arbitrary-uid" \
+LABEL name="acme/baseimage-centos7" \
       maintainer="refarch-feedback@redhat.com" \
       vendor="Acme Corp" \
       version="3.7" \
@@ -17,12 +17,11 @@ LABEL name="acme/starter-arbitrary-uid" \
       io.k8s.description="Starter app will do ....." \
       io.k8s.display-name="Starter app" \
       io.openshift.expose-services="" \
-      io.openshift.tags="acme,starter-arbitrary-uid,starter,arbitrary,uid"
+      io.openshift.tags="acme,baseimage-centos7,starter,arbitrary,uid"
 # Add Tini
 ENV TINI_VERSION v0.16.1
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
-#ENTRYPOINT ["/usr/local/bin/tini", "--"]
 
 ### Setup user for build execution and application runtime
 ENV APP_ROOT=/opt/app-root
@@ -37,7 +36,6 @@ USER 10001
 WORKDIR ${APP_ROOT}
 
 ### user name recognition at runtime w/ an arbitrary uid - for OpenShift deployments
-#ENTRYPOINT [ "uid_entrypoint" ]
 ENTRYPOINT [ "/tini", "--","uid_entrypoint" ]
 VOLUME ${APP_ROOT}/logs ${APP_ROOT}/data
 CMD run
